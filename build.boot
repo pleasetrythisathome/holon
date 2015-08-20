@@ -30,6 +30,16 @@
                    :manifold
                    :schema]
     :test-namespaces '[holon.events-test]}
+   :events
+   {:project 'ib5k.holon/events
+    :version "0.1.0-SNAPSHOT"
+    :description "event dispatcher"
+    :root "modules/events"
+    :dependencies [:clojure
+                   :clojurescript
+                   :component
+                   :schema]
+    :test-namespaces '[holon.events-test]}
    :test
    {:project 'ib5k.holon/test
     :version "0.1.0-SNAPSHOT"
@@ -58,11 +68,11 @@
                      [ib5k/boot-component "0.1.2-SNAPSHOT"]
                      [jeluard/boot-notify "0.1.2"]]
      :clojure       [[org.clojure/clojure "1.8.0-alpha4"]]
-     :clojurescript [[org.clojure/clojurescript "0.0-3308"]]
+     :clojurescript [[org.clojure/clojurescript "1.7.58"]]
      :component
      {:clj          [[com.stuartsierra/component "0.2.3"]]
       :cljs         [[quile/component-cljs "0.2.4"]]}
-     :datascript    [[datascript "0.10.0"]]
+     :datascript    [[datascript "0.11.6"]]
      :datomic       [[com.datomic/datomic-pro "0.9.5153"]
                      [juxt.modular/datomic "0.2.1"
                       :exclusions [com.datomic/datomic-free]]
