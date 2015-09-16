@@ -6,7 +6,7 @@
 (def modules
   {:component
    {:project 'ib5k.holon/component
-    :version "0.1.0-SNAPSHOT"
+    :version "0.1.1-SNAPSHOT"
     :description "utils for component systems"
     :root "modules/component"
     :dependencies [:clojure
@@ -55,7 +55,7 @@
    {:holon          (->> (for [[k {:keys [project version]}] modules]
                            [k [[project version]]])
                          (into {}))}
-   '{:aop           [[tangrammer/co-dependency "0.1.5"]
+   '{:aop           [[pleasetrythisathome.modular/co-dependency "0.2.1-SNAPSHOT"]
                      [milesian/aop "0.1.5"]
                      [milesian/identity "0.1.4"]]
      :async         [[org.clojure/core.async "0.1.346.0-17112a-alpha"]]

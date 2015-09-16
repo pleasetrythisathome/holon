@@ -3,7 +3,7 @@
                 :cljs quile.component)
              :as component :refer [system-map #?(:cljs SystemMap)]]
             #?@(:clj
-                [[tangrammer.component.co-dependency :as co-dependency]
+                [[modular.component.co-dependency :as co-dep]
                  [milesian.identity :as identity]])
             [ib5k.component.ctr :as ctr]
             [ib5k.component.using-schema :as us]
@@ -30,7 +30,7 @@
      (->> system-dependencies
           (map-vals (partial us/expand-dependency-map-schema system))
           (us/remove-self-dependencies)
-          (co-dependency/system-co-using system))))
+          (co-dep/system-co-using system))))
 
 (s/defn extract-key :- {s/Keyword s/Any}
   [component-map :- ComponentMap
@@ -72,9 +72,9 @@
      [system :- us/SystemMap]
      (let [system-atom (atom system)]
        (expand system {:before-start [[identity/add-meta-key system]
-                                      [co-dependency/assoc-co-dependencies system-atom]
+                                      [co-dep/assoc-co-dependencies system-atom]
                                       [ctr/validate-class]]
-                       :after-start [[co-dependency/update-atom-system system-atom]
+                       :after-start [[co-dep/update-atom-system system-atom]
                                      [ctr/validate-class]]})))
 
    :cljs

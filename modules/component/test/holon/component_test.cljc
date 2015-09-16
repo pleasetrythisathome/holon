@@ -21,9 +21,9 @@
             [schema.test])
   #?(:cljs
      (:require-macros [cemerick.cljs.test
-                       :refer (is deftest with-test run-tests testing test-var use-fixtures)]))
+                       :refer (is deftest with-test run-tests testing test-var use-fixtures)]))  )
 
-  (use-fixtures :once schema.test/validate-schemas))
+(use-fixtures :once schema.test/validate-schemas)
 
 (defprotocol TestProtocol
   (get-key [this key]))
@@ -60,7 +60,7 @@
 (deftest new-system-test
   (is (new-system components))
   (is (= {:com.stuartsierra.component/dependencies {:cmp :test},
-          :tangrammer.component.co-dependency/co-dependencies {:*cmp :test}}
+          :modular.component.co-dependency/co-dependencies {:*cmp :test}}
          (meta (:test-user (new-system components))))))
 
 (deftest expand-test
