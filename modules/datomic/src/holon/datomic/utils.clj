@@ -139,6 +139,19 @@
               ffirst
               (d/entity db)))))
 
+(s/defn first-modified
+  [connection :- (s/protocol DatabaseReference)
+   ref :- (s/protocol EntityReference)]
+  (->> ref
+       to-ref-id
+       (d/q '[:find (min ?when)
+              :in $ ?e
+              :where
+              [?tx :db/txInstant ?when]
+              [?e _ _ ?tx]]
+            (as-db connection))
+       ffirst))
+
 (s/defn last-modified
   [connection :- (s/protocol DatabaseReference)
    ref :- (s/protocol EntityReference)]
