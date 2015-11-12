@@ -6,7 +6,7 @@
 (def modules
   {:component
    {:project 'ib5k.holon/component
-    :version "0.1.1-SNAPSHOT"
+    :version "0.1.2-SNAPSHOT"
     :description "utils for component systems"
     :root "modules/component"
     :dependencies [:clojure
@@ -58,22 +58,20 @@
    '{:aop           [[pleasetrythisathome.modular/co-dependency "0.2.1-SNAPSHOT"]
                      [milesian/aop "0.1.5"]
                      [milesian/identity "0.1.4"]]
-     :async         [[org.clojure/core.async "0.1.346.0-17112a-alpha"]]
+     :async         [[org.clojure/core.async "0.2.374"]]
      :boot          [[adzerk/bootlaces "0.1.11"]
-                     [adzerk/boot-cljs "0.0-2814-4"]
-                     [adzerk/boot-cljs-repl "0.1.10-SNAPSHOT"]
+                     [adzerk/boot-cljs "1.7.166-1"]
+                     [adzerk/boot-cljs-repl "0.2.0"]
                      [adzerk/boot-test "1.0.4"]
-                     [boot-cljs-test/node-runner "0.1.0"]
+                     [crisptrutski/boot-cljs-test "0.2.0-SNAPSHOT"]
                      [boot-garden "1.2.5-2"]
                      [ib5k/boot-component "0.1.2-SNAPSHOT"]
                      [jeluard/boot-notify "0.1.2"]]
-     :clojure       [[org.clojure/clojure "1.8.0-alpha4"]]
-     :clojurescript [[org.clojure/clojurescript "1.7.58"]]
-     :component
-     {:clj          [[com.stuartsierra/component "0.2.3"]]
-      :cljs         [[quile/component-cljs "0.2.4"]]}
+     :clojure       [[org.clojure/clojure "1.8.0-RC1"]]
+     :clojurescript [[org.clojure/clojurescript "1.7.170"]]
+     :component     [[com.stuartsierra/component "0.3.0"]]
      :datascript    [[datascript "0.11.6"]]
-     :datomic       [[com.datomic/datomic-pro "0.9.5153"]
+     :datomic       [[com.datomic/datomic-pro "0.9.5327"]
                      [juxt.modular/datomic "0.2.1"
                       :exclusions [com.datomic/datomic-free]]
                      [io.rkn/conformity "0.3.4"
@@ -89,12 +87,12 @@
      :manifold      [[manifold "0.1.0"]]
      :repl          [[com.cemerick/piggieback "0.2.1"]
                      [org.clojure/tools.namespace "0.2.11"]
-                     [org.clojure/tools.nrepl "0.2.10"]
+                     [org.clojure/tools.nrepl "0.2.12"]
                      [weasel "0.7.0"]
                      [cider/cider-nrepl "0.9.0-SNAPSHOT"]]
-     :schema        [[prismatic/plumbing "0.4.2"]
-                     [prismatic/schema "0.4.0"]
-                     [ib5k/component-schema "0.1.2-SNAPSHOT"]]
+     :schema        [[prismatic/plumbing "0.5.2"]
+                     [prismatic/schema "1.0.3"]
+                     [ib5k/component-schema "0.1.4-SNAPSHOT"]]
      :reader        [[org.clojure/tools.reader "0.9.1"]]
      :test
      {:check        [[org.clojure/test.check "0.7.0"]]
@@ -135,7 +133,7 @@
  '[adzerk.boot-cljs           :refer :all]
  '[adzerk.boot-cljs-repl      :refer :all]
  '[adzerk.boot-test           :refer [test]]
- '[boot-cljs-test.node-runner :refer :all]
+ '[crisptrutski.boot-cljs-test :refer :all]
  '[boot-garden.core           :refer :all]
  '[boot-component.reloaded    :refer :all]
  '[jeluard.boot-notify        :refer :all])
@@ -149,7 +147,7 @@
   (let [{:keys [version root test-namespaces] :as module} (get modules id)]
     (task-options!
      pom #(merge % (select-keys module [:project :version :description]))
-     cljs-test-node-runner {:namespaces test-namespaces})
+     test-cljs {:namespaces test-namespaces})
     (bootlaces! version)
     (-> module
         (assoc :source-paths #(conj % (str root "/src")))
@@ -171,10 +169,10 @@
     (set-env! :resource-paths #(conj % (str root "/test")))
     (comp
      (test)
-     (cljs-test-node-runner)
+     (prep-cljs-tests)
      (cljs :source-map true
            :pretty-print true)
-     (run-cljs-test))))
+     (run-cljs-tests))))
 
 (deftask dev
   "watch and compile cljs, init cljs-repl"

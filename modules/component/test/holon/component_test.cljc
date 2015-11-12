@@ -4,24 +4,16 @@
              :refer (#?(:clj with-system) with-system-fixture *system*)
              #?@(:cljs
                  [:refer-macros (with-system)])]
-            #?@
-            (:clj
-             [[clojure.test :refer :all]]
-             :cljs
-             [[cemerick.cljs.test :as t]])
-            [#?(:clj
-                com.stuartsierra.component
-                :cljs
-                quile.component)
-             :as component :refer [Lifecycle system-map]]
+            #?(:clj
+               [clojure.test :refer :all]
+               :cljs
+               [cljs.test :as t :refer-macros (is deftest testing use-fixtures)])
+            [com.stuartsierra.component :as component]
             [ib5k.component.ctr :as ctr]
-            [ib5k.component.using-schema :as us]
+            [ib5k.component.schema :as us]
             [plumbing.core :refer [map-vals]]
             [schema.core :as s #?@(:cljs [:include-macros true])]
-            [schema.test])
-  #?(:cljs
-     (:require-macros [cemerick.cljs.test
-                       :refer (is deftest with-test run-tests testing test-var use-fixtures)]))  )
+            [schema.test])  )
 
 (use-fixtures :once schema.test/validate-schemas)
 

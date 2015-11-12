@@ -1,12 +1,10 @@
 (ns holon.component
-  (:require [#?(:clj com.stuartsierra.component
-                :cljs quile.component)
-             :as component :refer [system-map #?(:cljs SystemMap)]]
+  (:require [com.stuartsierra.component :as component :refer [system-map #?(:cljs SystemMap)]]
             #?@(:clj
                 [[modular.component.co-dependency :as co-dep]
                  [milesian.identity :as identity]])
             [ib5k.component.ctr :as ctr]
-            [ib5k.component.using-schema :as us]
+            [ib5k.component.schema :as us]
             [plumbing.core :refer [map-vals]]
             [schema.core :as s #?@(:cljs [:include-macros true])])
   #?(:clj

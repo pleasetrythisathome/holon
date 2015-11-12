@@ -1,15 +1,11 @@
 (ns holon.maker-test
   (:require [holon.maker :refer (make-args make)]
-            #?@
-            (:clj
-             [[clojure.test :refer :all]]
-             :cljs
-             [[cemerick.cljs.test :as t]])
+            #?(:clj
+               [clojure.test :refer :all]
+               :cljs
+               [cljs.test :as t :refer-macros (is deftest testing use-fixtures)])
             [schema.core :as s #?@(:cljs [:include-macros true])]
-            [schema.test])
-  #?(:cljs
-     (:require-macros [cemerick.cljs.test
-                       :refer (is deftest with-test run-tests testing test-var use-fixtures)])))
+            [schema.test]))
 
 (use-fixtures :once schema.test/validate-schemas)
 
