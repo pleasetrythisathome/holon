@@ -18,7 +18,7 @@
                        holon.component-test]}
    :datomic
    {:project 'ib5k.holon/datomic
-    :version "0.1.0-SNAPSHOT"
+    :version "0.1.1-SNAPSHOT"
     :description "datomic components"
     :root "modules/datomic"
     :dependencies [:async

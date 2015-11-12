@@ -1,6 +1,8 @@
 (ns holon.datomic.schema
   (:require [schema.core :as s]
             [schema.macros :as macros]
+            [schema.spec.core :as spec]
+            [schema.spec.leaf :as leaf]
             [schema.utils :as sutils])
   (:import [datomic.db DbId]))
 
@@ -52,23 +54,20 @@
   [e]
   (instance? datomic.Entity e))
 
-;; Wrapper type needed because Entity values do not implement
-;; IPersistentMap interface
 (defrecord EntitySchema
-  [schema]
+    [schema]
   s/Schema
-  (walker [this]
-    (let [map-checker (s/subschema-walker schema)]
-      (fn [e]
-        (or (and (map? e) ;; allow entities that have already been realized as maps
-                 (map-checker e))
-            (when-not (entity? e)
-              (macros/validation-error this e
-                (list 'instance? datomic.Entity (sutils/value-name e))))
-            (map-checker (into {} e))))))
+  (spec [this]
+    (let [checker (s/checker schema)]
+      (leaf/leaf-spec
+       (fn [e]
+         (cond
+           (map? e) (checker e) ;; allow entities that have already been realized as maps
+           (entity? e) (checker (into {} e))
+           :else (macros/validation-error this e (list 'instance? 'Entity (sutils/value-name e))))))))
   (explain [this]
-    (list 'entity 'datomic.Entity (or (:schema this)
-                                      (merge {} this)))))
+    (list 'entity 'Entity (or (:schema this)
+                              (merge {} this)))))
 
 (defn entity-schema?
   [schema]
