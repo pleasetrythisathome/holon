@@ -256,7 +256,3 @@
   (datomic-value-type [this] :db.type/uuid)
   java.net.URI
   (datomic-value-type [this] :db.type/uri))
-
-(extend-protocol IValueType
-  (Class/forName "[B")
-  (datomic-value-type [this] :db.type/bytes))

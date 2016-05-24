@@ -13,7 +13,8 @@
 (s/defschema ComponentMap
   {s/Keyword {:cmp s/Any
               (s/optional-key :using) us/Dependencies
-              #?@(:clj [(s/optional-key :co-using) us/Dependencies])}})
+              #?@(:clj [(s/optional-key :co-using) us/Dependencies])
+              s/Keyword s/Any}})
 
 (s/defschema UpdateComponent
   [(s/one (s/make-fn-schema [[s/Any]] [[s/Any]]) "cmp update fn") s/Any])
